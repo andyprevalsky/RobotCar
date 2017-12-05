@@ -1,4 +1,5 @@
 void setup() {
+  Serial.begin(9600);
   pinMode(P2_2, OUTPUT);
   pinMode(P3_0, OUTPUT);
   pinMode(P3_3, OUTPUT);
