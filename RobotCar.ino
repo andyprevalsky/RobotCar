@@ -12,10 +12,9 @@ void loop() {
   int sensorValue = analogRead(A0);
   float voltage = sensorValue * (5.0 / 1023.0);
   delay(100)
-  int sensorValue = analogRead(A0);
-  float voltage1 = sensorValue * (5.0 / 1023.0);
+  int sensorValue1 = analogRead(A0);
 
-  if (voltage1 + 30 < voltage) {
+  if (sensorValue + 30 < sensorValue1) {
     digitalWrite(4, HIGH);
     digitalWrite(6, HIGH);
     digitalWrite(5, LOW);
