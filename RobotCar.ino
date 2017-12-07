@@ -10,22 +10,22 @@ void setup() {
 }
 
 void loop() {
-  int list[];
+  //float voltage = sensorValue * (5.0 / 1023.0);
   // put your main code here, to run repeatedly:
-  int sensorValue = analogRead(A0);
-  float voltage = sensorValue * (5.0 / 1023.0);
-  delay(100)
-  int sensorValue1 = analogRead(A0);
+  int RigthSensorBefore = analogRead(A0);
+  delay(100);
+  int RightSensorAfter = analogRead(A0);
 
-  if (sensorValue1 + 30 < sensorValue) {
+  if (RightSensorAfter + 30 < RigthSensorBefore) {
     digitalWrite(4, HIGH);
     digitalWrite(6, HIGH);
     digitalWrite(5, LOW);
     digitalWrite(7, LOW);
-    delay(1000) 
+    delay(900);
   } else {
     digitalWrite(4, LOW);
     digitalWrite(6, LOW);
     digitalWrite(5, LOW);
     digitalWrite(7, LOW);
   }
+}
