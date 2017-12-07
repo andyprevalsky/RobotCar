@@ -14,25 +14,25 @@ void loop() {
   // put your main code here, to run repeatedly:
   Serial.println(analogRead(A0));
 
-  if (analogRead(A5) > 450) {
-    digitalWrite(4, LOW);
-    digitalWrite(6, LOW);
-    digitalWrite(5, LOW);
-    digitalWrite(7, LOW);
-  }
-
   if (baseline == 0) {
     baseline = analogRead(A0)
   }
 
-  else if (analogRead(A0) + 30 < baseline && analogRead(A1) + 30 < baseline){
+  else if (analogRead(A5) > 450) {
     digitalWrite(4, LOW);
     digitalWrite(6, LOW);
     digitalWrite(5, LOW);
     digitalWrite(7, LOW);
   }
 
-  else if (analogRead(A0) + 40 < baseline) {
+  else if (220 < analogRead(A0) < 240 && 220 < analogRead(A1) < 240){
+    digitalWrite(4, LOW);
+    digitalWrite(6, LOW);
+    digitalWrite(5, LOW);
+    digitalWrite(7, LOW);
+  }
+
+  else if (analogRead(A0) + 15 < baseline) {
     digitalWrite(4, HIGH);
     digitalWrite(6, LOW);
     digitalWrite(5, LOW);
