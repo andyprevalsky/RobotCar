@@ -19,7 +19,7 @@ void loop() {
     digitalWrite(5, LOW);
     digitalWrite(7, LOW);
   }*/
-
+  Serial.println(analogRead(A0));
   int RigthPSensorBefore = analogRead(A0);
   int LeftPSensorBefore = analogRead(A1); //XX is pin connected to other photo resistor
   delay(100);
