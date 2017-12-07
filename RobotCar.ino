@@ -11,10 +11,11 @@ void loop() {
   // put your main code here, to run repeatedly:
   int sensorValue = analogRead(A0);
   float voltage = sensorValue * (5.0 / 1023.0);
-  delay(100);
-  Serial.println(sensorValue);
+  delay(100)
+  int sensorValue = analogRead(A0);
+  float voltage1 = sensorValue * (5.0 / 1023.0);
 
-  if (sensorValue < 120) {
+  if (voltage1 + 30 < voltage) {
     digitalWrite(4, HIGH);
     digitalWrite(6, HIGH);
     digitalWrite(5, LOW);
@@ -25,4 +26,6 @@ void loop() {
     digitalWrite(5, LOW);
     digitalWrite(7, LOW);
   }
+  
+  
 }
