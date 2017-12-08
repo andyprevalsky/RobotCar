@@ -40,10 +40,24 @@ void setup() {
 }
 
 int baseline = 0;
+int forwardMoves = 0;
+int leftTurns = 0;
+int rightTurns = 0;
+bool firstTurn = false; // false is left, true is right
+
+// A0 is right photoresistor reading
+// A1 is left photoresistor reading
 
 void loop() {
   // put your main code here, to run repeatedly:
+  if (forwardMoves > 6){
+    leftTurns = 0;
+    rightTurns = 0;
+    forwardMoves = 0; // what does this line do?
+  }
+
   if (baseline == 0) {
+    stopMoving();
     Serial.println("Setting baseline");
     baseline = analogRead(A0);
   }
@@ -58,12 +72,60 @@ void loop() {
     stopMoving();
   }
 
+  else if (leftTurns >= 20 && rightTurns >= 20){ // Do a sharp turn: go forward, then hard turn
+    if (firstTurn){ // Sharp right
+      // Move forward until the sensor has cleared the line.
+      do {
+        goForward;
+        delay(25);
+        stopMoving();
+        delay(50);
+      } while (analogRead(A0) + 35 < baseline);
+
+      // Turn until the sensor has passed over the entire line.
+      do {
+        turnRight();
+        delay(25);
+        stopMoving();
+        delay(50);
+      } while (analogRead(A0) + 35 < baseline);
+    }
+
+    else { // Sharp left
+      // Move forward until the sensor has cleared the line.
+      do {
+        goForward();
+        delay(25);
+        stopMoving();
+        delay(50);
+      } while (analogRead(A1) + 35 < baseline);
+
+      // Turn until the sensor has passed over the entire line.
+      do {
+        turnLeft();
+        delay(25);
+        stopMoving();
+        delay(50);
+      } while (analogRead(A1) + 35 < baseline);
+    }
+  }
+
   else if (analogRead(A0) + 35 < baseline) {
     turnRight();
+    if (leftTurns == 0 && rightTurns == 0){
+      firstTurn = true;
+    }
+    forwardMoves = 0;
+    rightTurns++;
   }
 
   else if (analogRead(A1) + 35 < baseline) {
     turnLeft();
+    if (leftTurns == 0 && rightTurns == 0){
+      firstTurn = false;
+    }
+    forwardMoves = 0;
+    leftTurns++;
   }
 
   else {
