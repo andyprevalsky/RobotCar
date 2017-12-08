@@ -1,3 +1,35 @@
+void turnLeft(){
+  Serial.println("Turn left");
+  digitalWrite(4, LOW);
+  digitalWrite(6, HIGH);
+  digitalWrite(5, HIGH);
+  digitalWrite(7, LOW);
+}
+
+void turnRight(){
+  Serial.println("Turn right");
+  digitalWrite(4, HIGH);
+  digitalWrite(6, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(7, HIGH);
+}
+
+void goStraight(){
+  Serial.println("Go straight");
+  digitalWrite(4, HIGH);
+  digitalWrite(6, HIGH);
+  digitalWrite(5, LOW);
+  digitalWrite(7, LOW);
+}
+
+void stopMoving(){
+  Serial.println("Stop");
+  digitalWrite(4, LOW);
+  digitalWrite(6, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(7, LOW);
+}
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -7,56 +39,40 @@ void setup() {
   pinMode(7, OUTPUT);
 }
 
-bool obstacle = false;
-bool start = true;
+int baseline = 0;
 
 void loop() {
   // put your main code here, to run repeatedly:
-  Serial.println(analogRead(A0));
-
   if (baseline == 0) {
-    baseline = analogRead(A0)
+    Serial.println("Setting baseline");
+    baseline = analogRead(A0);
   }
 
   else if (analogRead(A5) > 450) {
-    digitalWrite(4, LOW);
-    digitalWrite(6, LOW);
-    digitalWrite(5, LOW);
-    digitalWrite(7, LOW);
+    Serial.println("IR block detected");
+    stopMoving();
   }
 
-  else if (220 < analogRead(A0) < 240 && 220 < analogRead(A1) < 240){
-    digitalWrite(4, LOW);
-    digitalWrite(6, LOW);
-    digitalWrite(5, LOW);
-    digitalWrite(7, LOW);
+  else if (220 < analogRead(A0) && analogRead(A0) < 240 && 220 < analogRead(A1) && analogRead(A1) < 240){
+    Serial.println("Red tape detected");
+    stopMoving();
   }
 
-  else if (analogRead(A0) + 15 < baseline) {
-    digitalWrite(4, HIGH);
-    digitalWrite(6, LOW);
-    digitalWrite(5, LOW);
-    digitalWrite(7, HIGH);
+  else if (analogRead(A0) + 35 < baseline) {
+    turnRight();
   }
 
-  else if (analogRead(A1) + 40 < baseline) {
-    digitalWrite(4, LOW);
-    digitalWrite(6, HIGH);
-    digitalWrite(5, HIGH);
-    digitalWrite(7, LOW);
+  else if (analogRead(A1) + 35 < baseline) {
+    turnLeft();
   }
 
   else {
-    digitalWrite(4, HIGH);
-    digitalWrite(6, HIGH);
-    digitalWrite(5, LOW);
-    digitalWrite(7, LOW);
+    goStraight();
   }
 
-  delay(500);
+  delay(25);
 
-  digitalWrite(4, LOW);
-  digitalWrite(6, LOW);
-  digitalWrite(5, LOW);
-  digitalWrite(7, LOW);
+  stopMoving();
+
+  delay(50);
 }
