@@ -39,7 +39,8 @@ void setup() {
   pinMode(7, OUTPUT);
 }
 
-int baseline = 0;
+int rightBaseline = 0;
+int leftBaseline = 0;
 int forwardMoves = 0;
 int leftTurns = 0;
 int rightTurns = 0;
@@ -56,10 +57,11 @@ void loop() {
     forwardMoves = 0; // what does this line do?
   }
 
-  if (baseline == 0) {
+  if (forwardMoves = 0) {
     stopMoving();
-    Serial.println("Setting baseline");
-    baseline = analogRead(A0);
+    Serial.println("Setting baselines");
+    rightBaseline = analogRead(A0);
+    leftBaseline = analogRead(A1);
   }
 
   else if (analogRead(A5) > 450) {
@@ -76,41 +78,47 @@ void loop() {
     if (firstTurn){ // Sharp right
       // Move forward until the sensor has cleared the line.
       do {
-        goForward;
-        delay(25);
+        Serial.println("Sharp right");
+        goStraight();
+        delay(40);
         stopMoving();
         delay(50);
-      } while (analogRead(A0) + 35 < baseline);
+      } while (analogRead(A0) + 45 < rightBaseline);
 
       // Turn until the sensor has passed over the entire line.
       do {
+        Serial.println("Sharp right");
         turnRight();
-        delay(25);
+        delay(40);
         stopMoving();
         delay(50);
-      } while (analogRead(A0) + 35 < baseline);
+      } while (analogRead(A0) + 45 < rightBaseline);
     }
 
     else { // Sharp left
       // Move forward until the sensor has cleared the line.
       do {
-        goForward();
-        delay(25);
+        Serial.println("Sharp left");
+        goStraight();
+        delay(40);
         stopMoving();
         delay(50);
-      } while (analogRead(A1) + 35 < baseline);
+      } while (analogRead(A1) + 45 < leftBaseline);
 
       // Turn until the sensor has passed over the entire line.
       do {
+        Serial.println("Sharp left");
         turnLeft();
-        delay(25);
+        delay(40);
         stopMoving();
         delay(50);
-      } while (analogRead(A1) + 35 < baseline);
+      } while (analogRead(A1) + 45 < leftBaseline);
     }
+    leftTurns = 0;
+    rightTurns = 0;
   }
 
-  else if (analogRead(A0) + 35 < baseline) {
+  else if (analogRead(A0) + 45 < rightBaseline) {
     turnRight();
     if (leftTurns == 0 && rightTurns == 0){
       firstTurn = true;
@@ -119,7 +127,7 @@ void loop() {
     rightTurns++;
   }
 
-  else if (analogRead(A1) + 35 < baseline) {
+  else if (analogRead(A1) + 45 < leftBaseline) {
     turnLeft();
     if (leftTurns == 0 && rightTurns == 0){
       firstTurn = false;
@@ -132,7 +140,7 @@ void loop() {
     goStraight();
   }
 
-  delay(25);
+  delay(40);
 
   stopMoving();
 
