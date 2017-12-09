@@ -57,14 +57,14 @@ void loop() {
     forwardMoves = 0; // what does this line do?
   }
 
-  if (rightBaseline == 0) {
+  if (forwardMoves == 0) {
     stopMoving();
     Serial.println("Setting baselines");
     rightBaseline = analogRead(A0);
     leftBaseline = analogRead(A1);
   }
 
-  else if (analogRead(A5) > 450) {
+  else if (analogRead(A5) > 350) {
     Serial.println("IR block detected");
     stopMoving();
   }
@@ -83,7 +83,7 @@ void loop() {
         delay(25);
         stopMoving();
         delay(50);
-      } while (analogRead(A0) + 45 < rightBaseline);
+      } while (analogRead(A0) + 35 < rightBaseline);
 
       goStraight();
       delay(500); // this is a speed (and thus battery level) dependent setting that places the center of the car over the tape
@@ -91,7 +91,7 @@ void loop() {
       delay(50);
 
       // Turn until the sensor has passed over the entire line.
-      while (analogRead(A0) + 45 > rightBaseline){ // turn while sensor is on white until touching tape
+      while (analogRead(A0) + 35 > rightBaseline){ // turn while sensor is on white until touching tape
         Serial.println("Sharp right");
         turnRight();
         delay(25);
@@ -99,7 +99,7 @@ void loop() {
         delay(50);
       }
 
-      while (analogRead(A0) + 45 < rightBaseline){ // turn over the tape
+      while (analogRead(A0) + 35 < rightBaseline){ // turn over the tape
         Serial.println("Sharp left");
         turnRight();
         delay(25);
@@ -116,7 +116,7 @@ void loop() {
         delay(25);
         stopMoving();
         delay(50);
-      } while (analogRead(A1) + 45 < leftBaseline);
+      } while (analogRead(A1) + 35 < leftBaseline);
 
       goStraight();
       delay(500); // this is a speed (and thus battery level) dependent setting that places the center of the car over the tape
@@ -124,7 +124,7 @@ void loop() {
       delay(50);
 
       // Turn until the sensor has passed over the entire line.
-      while (analogRead(A1) + 45 > leftBaseline){ // turn while sensor is on white until touching tape
+      while (analogRead(A1) + 35 > leftBaseline){ // turn while sensor is on white until touching tape
         Serial.println("Sharp left");
         turnLeft();
         delay(25);
@@ -132,7 +132,7 @@ void loop() {
         delay(50);
       }
 
-      while (analogRead(A1) + 45 < leftBaseline){ // turn over the tape
+      while (analogRead(A1) + 35 < leftBaseline){ // turn over the tape
         Serial.println("Sharp left");
         turnLeft();
         delay(25);
@@ -144,7 +144,7 @@ void loop() {
     rightTurns = 0;
   }
 
-  else if (analogRead(A0) + 45 < rightBaseline) {
+  else if (analogRead(A0) + 35 < rightBaseline) {
     turnRight();
     if (leftTurns == 0 && rightTurns == 0){
       firstTurn = true;
@@ -153,7 +153,7 @@ void loop() {
     rightTurns++;
   }
 
-  else if (analogRead(A1) + 45 < leftBaseline) {
+  else if (analogRead(A1) + 35 < leftBaseline) {
     turnLeft();
     if (leftTurns == 0 && rightTurns == 0){
       firstTurn = false;
