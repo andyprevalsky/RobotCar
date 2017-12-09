@@ -53,7 +53,7 @@ void loop() {
     forwardMoves = 0; // what does this line do?
   }
 
-  if (forwardMoves == 0) {
+  if (forwardMoves == 0) { // if everything breaks, change the condition back to rightBaseline == 0
     stopMoving();
     Serial.println("Stopping, setting baselines");
     rightBaseline = analogRead(A0);
